@@ -1,0 +1,172 @@
+
+-- create
+CREATE TABLE EMPLOYEE (
+  empId INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  dept TEXT,
+  salary decimal(10,2),
+  active boolean,
+  join_date date
+);
+
+-- insert
+INSERT INTO EMPLOYEE VALUES (0001, 'Clark', 'Sales', 100000, True, '2024-12-12');
+INSERT INTO EMPLOYEE VALUES (0002, 'Dave', 'Accounting', 120000, False,'2025,03-10');
+INSERT INTO EMPLOYEE VALUES (0003, 'Ava', 'Sales',110000, True, '2015-05-24');
+insert into employee (empId, name, dept, salary, active, join_date)
+values(0004, "Ravindra", 'HR', 150000, True, '2023-10-10');
+insert into employee (empId, name, dept, salary, active, join_date)
+values(0005, "Sudarshan", 'HR', 115000, False, '2025-07-01');
+insert into employee (empId, name, dept, salary, active, join_date)
+values(0006, "Aruna", 'Accounting', 125000, True, '2010-11-11');
+
+create table department(
+deptID  integer primary key,
+deptName text not null,
+block integer
+);
+
+insert into department (deptID, deptName, block) 
+values(2001, "Sales", 1);
+insert into department (deptID, deptName, block) 
+values(2002, "Accounting", 2);
+insert into department (deptID, deptName, block) 
+values(2003, "HR", 3);
+
+select name, 
+timestampdiff(year, join_date, current_date) as service 
+from employee;
+
+Output:
+
++-----------+---------+
+| name      | service |
++-----------+---------+
+| Clark     |       0 |
+| Dave      |       0 |
+| Ava       |      10 |
+| Ravindra  |       1 |
+| Sudarshan |       0 |
+| Aruna     |      14 |
+
++-----------+---------+
+
+select name, join_date 
+from employee
+order by join_date desc;
+
+Input for the program ( Optional )
+STDIN
+Output:
+
++-----------+------------+
+| name      | join_date  |
++-----------+------------+
+| Sudarshan | 2025-07-01 |
+| Dave      | 2025-03-10 |
+| Clark     | 2024-12-12 |
+| Ravindra  | 2023-10-10 |
+| Ava       | 2015-05-24 |
+| Aruna     | 2010-11-11 |
++-----------+------------+
+select name, join_date 
+from employee
+order by join_date;
++-----------+------------+
+| name      | join_date  |
++-----------+------------+
+| Aruna     | 2010-11-11 |
+| Ava       | 2015-05-24 |
+| Ravindra  | 2023-10-10 |
+| Clark     | 2024-12-12 |
+| Dave      | 2025-03-10 |
+| Sudarshan | 2025-07-01 |
++-----------+------------+
+
+
+create table Test(
+testID char(5), 
+testDate date, 
+marks int
+);
+
+insert into Test Values ("t1", '2024-08-15', 10);
+insert into Test Values ("t2", '2023-08-15', 50);
+insert into Test Values ("31", '2024-09-15', 70);
+select * from Test;
+select max(marks) as maxMark, 
+       min(marks) as minMark, 
+       avg(marks) as aveMark
+       from test
+       where testDate >=  DATE_ADD(current_date, INTERVAL -1 year);
+
+output
+
++--------+------------+-------+
+| testID | testDate   | marks |
++--------+------------+-------+
+| t1     | 2024-08-15 |    10 |
+| t2     | 2023-08-15 |    50 |
+| 31     | 2024-09-15 |    70 |
++--------+------------+-------+
++---------+---------+---------+
+| maxMark | minMark | aveMark |
++---------+---------+---------+
+|      70 |      10 | 40.0000 |
++---------+---------+---------+
+
+create table hyderabad(
+empID  Integer primary key,
+empName varchar(20) not null,
+project char(20)
+);
+
+create table bangalore(
+empID  Integer primary key,
+empName varchar(20) not null,
+project char(20)
+);
+
+
+insert into hyderabad (empId, empName, project) values 
+(1001, "aruna", "java");
+insert into hyderabad (empId, empName, project) values 
+(1002, "arun", "cloud");
+insert into hyderabad (empId, empName, project) values 
+(1003, "arjun", "java");
+
+insert into bangalore (empId, empName, project) values 
+(1001, "aruna", "java");
+insert into bangalore (empId, empName, project) values 
+(2001, "archana", "BI");
+insert into bangalore (empId, empName, project) values 
+(2002, "arjun", "java");
+insert into bangalore (empId, empName, project) values 
+(2003, "aman", "cloud");
+
+select h.empName, b.empName, b.project from 
+hyderabad as h inner join bangalore as b on 
+h.project = b.project
+where h.project = 'java';
+
++---------+---------+---------+
+| empName | empName | project |
++---------+---------+---------+
+| arjun   | aruna   | java    |
+| aruna   | aruna   | java    |
+| arjun   | arjun   | java    |
+| aruna   | arjun   | java    |
++---------+---------+---------+
+
+select h.empName, b.empName, b.project from 
+hyderabad as h inner join bangalore as b on 
+h.project = b.project;
++---------+---------+---------+
+| empName | empName | project |
++---------+---------+---------+
+| arjun   | aruna   | java    |
+| aruna   | aruna   | java    |
+| arjun   | arjun   | java    |
+| aruna   | arjun   | java    |
+| arun    | aman    | cloud   |
++---------+---------+---------+
