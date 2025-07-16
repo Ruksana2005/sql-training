@@ -1,0 +1,230 @@
+CREATE TABLE EMPLOYEE (
+  empId INTEGER PRIMARY KEY,
+  name varchar(20) DEFAULT 'no name',
+  dept varchar(10) DEFAULT 'general', 
+  salary integer DEFAULT 0
+);
+
+insert into employee (empId, name) values (1, "aruna");
+
+insert into employee values (2, "archana", "mba", 100000);
+
+insert into employee values 
+(3, "amala", "mca", 120000), 
+(4, "amar", "DS", 110000), 
+(5, "akbar", "IT", 115000);
+insert into employee (empId, name) values (6, "John");
+
+update employee 
+set dept = "HR", salary = 75000
+where empId = 1 or empId = 6;
+select * from employee;
+
++-------+---------+------+--------+
+| empId | name    | dept | salary |
++-------+---------+------+--------+
+|     1 | aruna   | HR   |  75000 |
+|     2 | archana | mba  | 100000 |
+|     3 | amala   | mca  | 120000 |
+|     4 | amar    | DS   | 110000 |
+|     5 | akbar   | IT   | 115000 |
+|     6 | John    | HR   |  75000 |
++-------+---------+------+--------+
+
+delete -- deleting specific rows using the condition
+truncate -- deleting all the rows and the schema will remains after truncating
+drop   --- deleting entire table(schema will also be deleted)
+
+delete from employee where dept='hr';
+select * from employee;
+truncate table employee;
+desc employee;
+drop table employee;
+select * from employee;
+
+Output:
+
++-------+---------+------+--------+
+| empId | name    | dept | salary |
++-------+---------+------+--------+
+|     1 | aruna   | HR   |  75000 |
+|     2 | archana | mba  | 100000 |
+|     3 | amala   | mca  | 120000 |
+|     4 | amar    | DS   | 110000 |
+|     5 | akbar   | IT   | 115000 |
+|     6 | John    | HR   |  75000 |
++-------+---------+------+--------+
+after deleting the rows whose dept=hr
++-------+---------+------+--------+
+| empId | name    | dept | salary |
++-------+---------+------+--------+
+|     2 | archana | mba  | 100000 |
+|     3 | amala   | mca  | 120000 |
+|     4 | amar    | DS   | 110000 |
+|     5 | akbar   | IT   | 115000 |
++-------+---------+------+--------+
+truncating only schema remains
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| empId  | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | YES  |     | no name |       |
+| dept   | varchar(10) | YES  |     | general |       |
+| salary | int         | YES  |     | 0       |       |
++--------+-------------+------+-----+---------+-------+
+
+dropped the table no data remains everything will be deleted
+
+ERROR 1146 (42S02) at line 29: Table 'sandbox_db.employee' doesn't exist
+
+-- atomocity
+start transaction;
+update employee set salary=salary-20000 where empid=3;
+update employee set salary=salary+20000 where empid=1;
+commit;
+select * from employee;
+
++-------+---------+------+--------+
+| empId | name    | dept | salary |
++-------+---------+------+--------+
+|     1 | aruna   | HR   |  95000 |
+|     2 | archana | mba  | 100000 |
+|     3 | amala   | mca  | 100000 |
+|     4 | amar    | DS   | 110000 |
+|     5 | akbar   | IT   | 115000 |
+|     6 | John    | HR   |  75000 |
++-------+---------+------+--------+
+
+primary key -- unique no dupliactes allowed and not null,a table contrains single primary key
+unique key -- no duplicates null values are  allowed,a table contains multiple unique keys
+
+CREATE TABLE EMPLOYEE (
+  empId INTEGER AUTO_INCREMENT primary key,
+  name varchar(20) DEFAULT 'no name',
+  email varchar(50) unique not null,
+  dept varchar(10) DEFAULT 'general', 
+  salary integer
+);
+
+INSERT INTO employee (name, email, salary) VALUES 
+("aruna", "aruna@gmail.com", 10000), 
+("archana", "archana@yahoo.com", 12000), 
+("amalla", "amala@mits.edu", 199999),
+("amalla", "r@mits.com", 199999);
+select * from employee;
+
+Output:
+
++-------+---------+-------------------+---------+--------+
+| empId | name    | email             | dept    | salary |
++-------+---------+-------------------+---------+--------+
+|     1 | aruna   | aruna@gmail.com   | general |  10000 |
+|     2 | archana | archana@yahoo.com | general |  12000 |
+|     3 | amalla  | amala@mits.edu    | general | 199999 |
+|     4 | amalla  | r@mits.com        | general | 199999 |
++-------+---------+-------------------+---------+--------+
+
+ALTER TABLE employee RENAME to emp;
+select * from emp;
+ALTER TABLE emp RENAME column salary to remuneration;
+select * from emp;
+alter table emp modify remuneration decimal(10,2);
+select * from emp;
+alter table emp add mob integer default 99999 ;
+select * from emp;
+alter table emp drop column email;
+select * from emp;
+
+Output:
+
++-------+---------+-------------------+---------+--------+
+| empId | name    | email             | dept    | salary |
++-------+---------+-------------------+---------+--------+
+|     1 | aruna   | aruna@gmail.com   | general |  10000 |
+|     2 | archana | archana@yahoo.com | general |  12000 |
+|     3 | amalla  | amala@mits.edu    | general | 199999 |
++-------+---------+-------------------+---------+--------+
++-------+---------+-------------------+---------+--------------+
+| empId | name    | email             | dept    | remuneration |
++-------+---------+-------------------+---------+--------------+
+|     1 | aruna   | aruna@gmail.com   | general |        10000 |
+|     2 | archana | archana@yahoo.com | general |        12000 |
+|     3 | amalla  | amala@mits.edu    | general |       199999 |
++-------+---------+-------------------+---------+--------------+
++-------+---------+-------------------+---------+--------------+
+| empId | name    | email             | dept    | remuneration |
++-------+---------+-------------------+---------+--------------+
+|     1 | aruna   | aruna@gmail.com   | general |     10000.00 |
+|     2 | archana | archana@yahoo.com | general |     12000.00 |
+|     3 | amalla  | amala@mits.edu    | general |    199999.00 |
++-------+---------+-------------------+---------+--------------+
++-------+---------+-------------------+---------+--------------+-------+
+| empId | name    | email             | dept    | remuneration | mob   |
++-------+---------+-------------------+---------+--------------+-------+
+|     1 | aruna   | aruna@gmail.com   | general |     10000.00 | 99999 |
+|     2 | archana | archana@yahoo.com | general |     12000.00 | 99999 |
+|     3 | amalla  | amala@mits.edu    | general |    199999.00 | 99999 |
++-------+---------+-------------------+---------+--------------+-------+
++-------+---------+---------+--------------+-------+
+| empId | name    | dept    | remuneration | mob   |
++-------+---------+---------+--------------+-------+
+|     1 | aruna   | general |     10000.00 | 99999 |
+|     2 | archana | general |     12000.00 | 99999 |
+|     3 | amalla  | general |    199999.00 | 99999 |
++-------+---------+---------+--------------+-------+
+
+CREATE TABLE EMPLOYEE (
+  empId INTEGER AUTO_INCREMENT primary key,
+  name varchar(20) DEFAULT 'no name',
+  email varchar(50),
+  dept varchar(10) DEFAULT 'general', 
+  salary integer
+);
+
+insert into employee (name, email, salary, dept) values 
+("aruna", "aruna@gmail.com", 100000, 'HR'), 
+("archana", "archana@yahoo.com", 120000, "HR"), 
+("arun", "arun@yahoo.com", 80000, "HR"),
+("amala", "amala@mits.edu", 199999, "IT"), 
+("anthony", "anthony@mits.edu", 100000, "IT"), 
+("akbar", "akbar@mits.edu", 120000, "IT");
+select * from employee;
+select name, salary  from employee 
+where salary > (select avg(salary) from employee);
+
+select name, salary  from employee 
+where salary < (select avg(salary) from employee);
+
+Output:
+
++-------+---------+-------------------+------+--------+
+| empId | name    | email             | dept | salary |
++-------+---------+-------------------+------+--------+
+|     1 | aruna   | aruna@gmail.com   | HR   | 100000 |
+|     2 | archana | archana@yahoo.com | HR   | 120000 |
+|     3 | arun    | arun@yahoo.com    | HR   |  80000 |
+|     4 | amala   | amala@mits.edu    | IT   | 199999 |
+|     5 | anthony | anthony@mits.edu  | IT   | 100000 |
+|     6 | akbar   | akbar@mits.edu    | IT   | 120000 |
++-------+---------+-------------------+------+--------+
+salary>avg(sal)
++---------+--------+
+| name    | salary |
++---------+--------+
+| archana | 120000 |
+| amala   | 199999 |
+| akbar   | 120000 |
++---------+--------+
+salary<avg(sal)
++---------+--------+
+| name    | salary |
++---------+--------+
+| aruna   | 100000 |
+| arun    |  80000 |
+| anthony | 100000 |
++---------+--------+
+
+where -- individual rows
+having -- aggregated rows(groups) 
+
+
